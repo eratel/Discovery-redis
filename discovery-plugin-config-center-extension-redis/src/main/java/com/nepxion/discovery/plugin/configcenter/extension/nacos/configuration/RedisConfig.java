@@ -26,7 +26,7 @@ public class RedisConfig
      *
      * @return
      */
-    @Bean
+    @Bean(name = "RedisTemplate")
     public RedisTemplate<Object, Object> functionDomainRedisTemplate(JedisConnectionFactory redisConnectionFactory
             , Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer) {
         RedisTemplate<Object, Object> redisTemplate = new RedisTemplate<>();
