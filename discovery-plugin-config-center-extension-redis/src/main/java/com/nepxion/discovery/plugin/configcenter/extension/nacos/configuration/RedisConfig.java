@@ -50,11 +50,11 @@ public class RedisConfig
     {
 
         redisTemplate.setConnectionFactory(redisConnectionFactory);
+        redisTemplate.setKeySerializer(jackson2JsonRedisSerializer);
+        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
+        redisTemplate.setHashKeySerializer(jackson2JsonRedisSerializer);
+        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
         redisTemplate.setDefaultSerializer(jackson2JsonRedisSerializer);
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-        redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
-        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
     }
 
     @Bean
