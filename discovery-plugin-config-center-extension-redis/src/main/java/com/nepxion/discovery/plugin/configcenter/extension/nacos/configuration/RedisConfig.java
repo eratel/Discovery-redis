@@ -99,7 +99,7 @@ public class RedisConfig
 
     @Bean
     MessageListenerAdapter listenerAdapter(RedisConfigAdapter redisReceiver,Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer) {
-        MessageListenerAdapter adapter = new MessageListenerAdapter(redisReceiver, "onMessage");
+        MessageListenerAdapter adapter = new MessageListenerAdapter(redisReceiver, "subscribeConfig");
         adapter.setSerializer(jackson2JsonRedisSerializer);
         return adapter;
     }

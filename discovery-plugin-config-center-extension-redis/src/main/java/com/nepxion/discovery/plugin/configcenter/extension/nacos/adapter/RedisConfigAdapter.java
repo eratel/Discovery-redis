@@ -50,35 +50,7 @@ public class RedisConfigAdapter extends ConfigAdapter  {
         return config != null ? config.toString() : null;
     }
 
-//    @PostConstruct
-//    public void subscribeConfig(String s) throws Exception {
-//        String groupKey = pluginContextAware.getGroupKey();
-//        String group = pluginAdapter.getGroup();
-//        String serviceId = pluginAdapter.getServiceId();
-//        Object o = redisTemplate.opsForHash().get(groupKey, group);
-//        LOG.info("Subscribe remote config from Nacos server, {}={}, serviceId={}", groupKey, group, serviceId);
-//        if(o != null){
-//            fireRuleUpdated(new RuleUpdatedEvent(o.toString()), true);
-//        }else{
-//            fireRuleCleared(new RuleClearedEvent(), true);
-//        }
-//    }
-
-    @PostConstruct
-    public void subscribeConfig() throws Exception {
-        String groupKey = pluginContextAware.getGroupKey();
-        String group = pluginAdapter.getGroup();
-        String serviceId = pluginAdapter.getServiceId();
-        String c = getConfig(group, serviceId);
-        LOG.info("Subscribe remote config from Nacos server, {}={}, serviceId={}", groupKey, group, serviceId);
-        if(StringUtils.isNotBlank(c)){
-            fireRuleUpdated(new RuleUpdatedEvent(c), true);
-        }else{
-            fireRuleCleared(new RuleClearedEvent(), true);
-        }
-    }
-
-    public void onMessage(String config) {
+    public void subscribeConfig(String config) throws Exception {
         String groupKey = pluginContextAware.getGroupKey();
         String group = pluginAdapter.getGroup();
         String serviceId = pluginAdapter.getServiceId();
