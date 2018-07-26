@@ -22,7 +22,8 @@ public class RedisConfigAdapter implements ConfigAdapter {
     @Override
     public boolean updateConfig(String group, String serviceId, String config) throws Exception {
         redisTemplate.opsForHash().put(group,serviceId,config);
-        redisTemplate.convertAndSend("default",config);
+        String channel = group + "-" + serviceId;
+        redisTemplate.convertAndSend(channel,config);
         return true;
     }
 

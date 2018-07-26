@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nepxion.discovery.plugin.configcenter.ConfigAdapter;
 import com.nepxion.discovery.plugin.configcenter.extension.nacos.adapter.RedisConfigAdapter;
+import com.nepxion.discovery.plugin.framework.adapter.PluginAdapter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -21,11 +23,9 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class RedisConfig
 {
 
-    /**
-     * 实例化 RedisTemplate 对象
-     *
-     * @return
-     */
+    @Autowired
+    private PluginAdapter pluginAdapter;
+
     @Bean(name = "RedisTemplate")
     public RedisTemplate<Object, Object> functionDomainRedisTemplate(JedisConnectionFactory redisConnectionFactory
             , Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer) {
@@ -91,9 +91,12 @@ public class RedisConfig
     @Bean
     RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory,
                                             MessageListenerAdapter listenerAdapter) {
+        String group = pluginAdapter.getGroup();
+        String serviceId = pluginAdapter.getServiceId();
+        String channel = group + "-" + serviceId;
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.addMessageListener(listenerAdapter, new PatternTopic("default"));
+        container.addMessageListener(listenerAdapter, new PatternTopic(channel));
         return container;
     }
 
